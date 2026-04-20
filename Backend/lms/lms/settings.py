@@ -4,7 +4,7 @@ Django settings for lms project.
 
 import os
 from pathlib import Path
-from decouple import config  # Corrected: Only import config from decouple
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +14,9 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-uef*0$at%5fm&m*4q#h^o
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+# UPDATED: Added local hosts to allow connection
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 # Application definition
 
@@ -27,23 +29,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # Third-party apps
-    'corsheaders',
+    'corsheaders',      # Correctly placed
     'rest_framework',
+    'rest_framework_simplejwt',
     
-    # Your Internal Apps (Updated to 'user')
+    # Your Internal Apps
     'user', 
     'details',
     'academics',
 ]
 
-# Crucial: Tell Django to use your custom User model from the 'user' app
+# Crucial: Custom User model
 AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', # Added for frontend-backend communication
+    'corsheaders.middleware.CorsMiddleware',           # MUST BE AT THE TOP
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware',       # MUST BE BELOW CORS
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -70,6 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lms.wsgi.application'
 
+
 # Database - PostgreSQL
 DATABASES = {
     'default': {
@@ -82,6 +86,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -90,11 +95,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+
 
 # Static and Media Files
 STATIC_URL = 'static/'
@@ -102,6 +109,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # JWT Authentication Settings
 REST_FRAMEWORK = {
@@ -112,3 +120,23 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+# --- NEW: CORS CONFIGURATION ---
+# This allows your Vite frontend (port 5173) to connect to this API
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+# Necessary for sending cookies/headers like JWT or CSRF tokens
+CORS_ALLOW_CREDENTIALS = True
+
+# Allows specific headers (Content-Type, Authorization, etc.)
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]

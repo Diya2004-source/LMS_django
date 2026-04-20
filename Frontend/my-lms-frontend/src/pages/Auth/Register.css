@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.auth-container {
+    /* FULL BACKGROUND IMAGE */
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+                url('../../assets/Registration.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-glass-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 28px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.auth-logo {
+    width: 60px;
+    height: 60px;
+    background: #ff6a00;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    margin: 0 auto 15px;
+    box-shadow: 0 10px 20px rgba(255, 106, 0, 0.3);
+}
+
+.auth-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.auth-header p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.auth-input-group {
+    position: relative;
+    width: 100%;
+}
+
+/* THE ICON BADGE - Makes Icons Visible */
+.icon-badge {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    background: #ff6a00; /* Bright visible background */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.auth-input-group input {
+    width: 100%;
+    padding: 14px 15px 14px 58px; /* High left padding to clear the badge */
+    background: rgba(0, 0, 0, 0.4); /* Darker input for better text contrast */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.auth-input-group input:focus {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: #ff6a00;
+    box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.15);
+}
+
+.auth-input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* EYE TOGGLE */
+.auth-eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-eye:hover {
+    color: #ff6a00;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.error-text {
+    display: block;
+    font-size: 0.75rem;
+    color: #ff4d4d;
+    margin-top: 6px;
+    padding-left: 10px;
+    font-weight: 500;
+}
+
+/* SUBMIT BUTTON */
+.auth-submit {
+    margin-top: 10px;
+    padding: 16px;
+    background: #ff6a00;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+    background: #e65f00;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(255, 106, 0, 0.35);
+}
+
+.auth-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.auth-footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-footer a {
+    color: #ff6a00;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.spinning {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 480px) {
+    .auth-glass-card {
+        padding: 40px 25px;
+    }
+    .auth-header h2 {
+        font-size: 1.5rem;
+    }
+}

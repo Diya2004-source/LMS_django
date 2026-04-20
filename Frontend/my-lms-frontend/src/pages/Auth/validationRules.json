@@ -1,0 +1,22 @@
+{
+  "username": {
+    "required": true,
+    "minLength": 3,
+    "message": "Username must be at least 3 characters"
+  },
+  "email": {
+    "required": true,
+    "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+    "message": "Enter a valid email address"
+  },
+  "password": {
+    "required": true,
+    "minLength": 6,
+    "message": "Password must be at least 6 characters"
+  },
+  "confirmPassword": {
+    "required": true,
+    "minLength": 6,
+    "message": "Please confirm your password"
+  }
+}
