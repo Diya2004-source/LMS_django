@@ -28,3 +28,32 @@ class Enrollment(models.Model):
 
     class Meta:
         unique_together = ('user', 'course') # Prevents double enrollment
+
+class StudentActivity(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    course = models.ForeignKey('Course', on_delete=models.CASCADE)
+    
+    # Track specific metrics
+    seconds_spent = models.PositiveIntegerField(default=0)
+    pages_visited = models.PositiveIntegerField(default=1)
+    last_active = models.DateTimeField(auto_now=True)
+    
+    # This will help the AI analyze trends by date
+    date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        # One entry per user per course per day
+        unique_together = ('user', 'course', 'date')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.course.title} - {self.date}"
+
+class StudentRiskScore(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    risk_percentage = models.FloatField(default=0.0) # 0 to 100
+    risk_level = models.CharField(max_length=10, default="Low") # Low, Medium, High
+    last_calculated = models.DateTimeField(auto_now=True)
+    reason = models.TextField(blank=True, null=True) # e.g., "Inactive for 5 days"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.risk_level} Risk"
