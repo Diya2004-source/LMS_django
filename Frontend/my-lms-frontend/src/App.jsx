@@ -1,32 +1,39 @@
-// 1. All Imports go AT THE TOP
+// 1. All Imports
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './pages/Auth/Register';
+import Login from './pages/Auth/Login'; // Import your new Login page
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import './App.css';
 
-// 2. The App component MUST be a Function
-function App() {
-  
-  // 3. (Optional) Any hooks like useState go INSIDE the function, above the 'return'
-  // const [data, setData] = React.useState(null); 
 
+function App() {
   return (
-    // 4. Everything inside 'return' is your HTML/Components
     <Router>
       <Routes>
-        {/* http://localhost:5173/register */}
+        {/* Auth Routes */}
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
-        {/* http://localhost:5173/admin */}
+        {/* Admin Routes */}
         <Route path="/admin" element={<AdminDashboard />} />
 
-        {/* Redirect home to register for now */}
-        <Route path="/" element={<Navigate to="/register" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+        {/* User Dashboard (The page users see after logging in) */}
+        <Route path="/dashboard" element={
+          <div style={{color: 'white', padding: '20px'}}>
+            <h1>User Dashboard</h1>
+            <p>Welcome back! You have successfully logged in.</p>
+          </div>
+        } />
+
+        {/* Home Redirect: Sends users to login by default */}
+        <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
 }
 
-// 5. This tells other files they can use 'App'
 export default App;

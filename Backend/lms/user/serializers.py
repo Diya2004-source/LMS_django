@@ -21,6 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 # 3. Register Serializer (For creating new accounts)
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    role = serializers.CharField(required=False, default='student')
 
     class Meta:
         model = User

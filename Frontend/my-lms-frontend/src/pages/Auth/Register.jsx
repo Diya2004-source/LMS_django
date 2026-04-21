@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; // 1. Added useNavigate and Link
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Eye, EyeOff, User, Mail, Lock, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -7,6 +8,8 @@ import rules from './validationRules.json';
 import './Register.css';
 
 const Register = () => {
+    const navigate = useNavigate(); // 2. Initialize navigate hook
+    
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -50,22 +53,43 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if (!validateForm()) {
-            toast.error("Validation failed. Please check the fields.");
+            toast.error("Please fix the validation errors.");
             return;
         }
 
         try {
             setLoading(true);
-            const response = await axios.post('http://127.0.0.1:8000/api/user/register/', {
+            
+            const payload = {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
-                confirm_password: formData.confirmPassword
-            });
-            toast.success("Success! Welcome to the platform.");
+                role: 'student' 
+            };
+
+            const response = await axios.post('http://127.0.0.1:8000/api/user/register/', payload);
+            
+            if (response.status === 201 || response.status === 200) {
+                toast.success("Success! Redirecting to login...");
+                
+                // 3. Redirect to login after a short delay so user can see the success message
+                setTimeout(() => {
+                    navigate('/login'); 
+                }, 2000);
+            }
         } catch (error) {
-            toast.error(error.response?.data?.message || "Registration failed");
+            if (error.response && error.response.data) {
+                const serverErrors = error.response.data;
+                Object.keys(serverErrors).forEach((field) => {
+                    const messages = serverErrors[field];
+                    const errorMsg = Array.isArray(messages) ? messages.join(", ") : messages;
+                    toast.error(`${field.toUpperCase()}: ${errorMsg}`);
+                });
+            } else {
+                toast.error("Registration failed. Please check your connection.");
+            }
         } finally {
             setLoading(false);
         }
@@ -73,7 +97,7 @@ const Register = () => {
 
     return (
         <div className="auth-container">
-            <ToastContainer position="top-right" theme="colored" />
+            <ToastContainer position="top-right" theme="colored" autoClose={2000} />
             
             <div className="auth-glass-card">
                 <div className="auth-header">
@@ -85,7 +109,6 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="auth-form" noValidate>
-                    {/* Username */}
                     <div className="auth-input-group">
                         <div className="icon-badge">
                             <User size={20} strokeWidth={2.5} />
@@ -101,7 +124,6 @@ const Register = () => {
                         {errors.username && <span className="error-text">{errors.username}</span>}
                     </div>
 
-                    {/* Email */}
                     <div className="auth-input-group">
                         <div className="icon-badge">
                             <Mail size={20} strokeWidth={2.5} />
@@ -116,7 +138,6 @@ const Register = () => {
                         {errors.email && <span className="error-text">{errors.email}</span>}
                     </div>
 
-                    {/* Password */}
                     <div className="auth-input-group">
                         <div className="icon-badge">
                             <Lock size={20} strokeWidth={2.5} />
@@ -134,7 +155,6 @@ const Register = () => {
                         {errors.password && <span className="error-text">{errors.password}</span>}
                     </div>
 
-                    {/* Confirm Password */}
                     <div className="auth-input-group">
                         <div className="icon-badge">
                             <Lock size={20} strokeWidth={2.5} />
@@ -158,7 +178,7 @@ const Register = () => {
                 </form>
 
                 <div className="auth-footer">
-                    Already have an account? <a href="/login">Sign In</a>
+                    Already have an account? <Link to="/login">Sign In</Link>
                 </div>
             </div>
         </div>
